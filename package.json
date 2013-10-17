@@ -1,0 +1,11 @@
+{
+  "name": "request-data",
+  "version": "0.0.1",
+  "description": "wraps any fn(request, response) function, parses the requests body, and calls the wrapped function with data as the last parameter.",
+  "main": "request-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kory Nunn",
+  "license": "BSD"
+}
