@@ -19,7 +19,7 @@ function getRequestData(maxSize, raw, callback){
             response = args[1];
 
         request.on('data',function(chunk){
-            if (data.length > maxSize || 1e6) {
+            if(data.length > (maxSize || getRequestData.maxRequestSize || 1e6)){
                 // flood attack, kill.
                 request.connection.destroy();
             }

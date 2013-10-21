@@ -47,3 +47,12 @@ if you want to use it with a custom router that adds params after request/respon
 
     });
 
+By default request-data will kill a request if you try and send it more than 1e6 bytes.
+
+This can be overriden per handler:
+
+    getRequestData(1e10, function(request, response, data){...
+
+Or globally:
+
+    getRequestData.maxRequestSize = 1e10;
