@@ -1,6 +1,6 @@
 {
   "name": "request-data",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "wraps any fn(request, response) function, parses the requests body, and calls the wrapped function with data as the last parameter.",
   "main": "request-data.js",
   "scripts": {
