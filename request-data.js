@@ -1,22 +1,22 @@
 ///[readme.md]
 
 function getRequestData(maxSize, raw, callback){
+    if(typeof maxSize !== 'number'){
+        callback = raw;
+        raw = maxSize;
+        maxSize = null;
+    }
+
+    if(typeof raw !== 'bool'){
+        callback = raw;
+        raw = null;
+    }
+
     return function(){
         var data = '',
             args = Array.prototype.slice.call(arguments),
             request = args[0],
             response = args[1];
-
-        if(typeof maxSize !== 'number'){
-            callback = raw;
-            raw = maxSize;
-            maxSize = null;
-        }
-
-        if(typeof raw !== 'bool'){
-            callback = raw;
-            raw = null;
-        }
 
         request.on('data',function(chunk){
             if (data.length > maxSize || 1e6) {
