@@ -1,13 +1,14 @@
 ///[readme.md]
 
 function getRequestData(maxSize, raw, callback){
+
     if(typeof maxSize !== 'number'){
         callback = raw;
         raw = maxSize;
         maxSize = null;
     }
 
-    if(typeof raw !== 'bool'){
+    if(typeof raw !== 'boolean'){
         callback = raw;
         raw = null;
     }
