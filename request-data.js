@@ -28,7 +28,18 @@ function getRequestData(maxSize, raw, callback){
         });
 
         request.on('end', function(){
-            callback.apply(null, args.concat([raw ? data : data ? JSON.parse(data) : undefined]));
+            var newArg;
+            if (raw) {
+                newArg = data;
+            } else if (data) {
+                try {
+                    newArg = JSON.parse(data);
+                } catch (e) {
+                    //Invalid json
+                    newArg = undefined;
+                }
+            }
+            callback.apply(null, args.concat([newArg]));
         });
     };
 }
