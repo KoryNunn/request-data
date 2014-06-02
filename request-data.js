@@ -16,8 +16,7 @@ function getRequestData(maxSize, raw, callback){
     return function(){
         var data = '',
             args = Array.prototype.slice.call(arguments),
-            request = args[0],
-            response = args[1];
+            request = args[0];
 
         request.on('data',function(chunk){
             if(data.length > (maxSize || getRequestData.maxRequestSize || 1e6)){
@@ -32,11 +31,12 @@ function getRequestData(maxSize, raw, callback){
             if (raw) {
                 newArg = data;
             } else if (data) {
+
                 try {
                     newArg = JSON.parse(data);
                 } catch (e) {
                     //Invalid json
-                    newArg = undefined;
+                    newArg = e;
                 }
             }
             callback.apply(null, args.concat([newArg]));
