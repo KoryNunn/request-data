@@ -53,6 +53,6 @@ You can handle this case by checking if data is an error:
             return;
         }
 
-        // Otherwise, data is valid JSON.
+        // Otherwise, data was valid, and has been parsed.
 
     });
