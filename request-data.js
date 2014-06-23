@@ -1,4 +1,5 @@
 ///[readme.md]
+var queryString = require('querystring');
 
 function getRequestData(maxSize, raw, callback){
 
@@ -31,11 +32,11 @@ function getRequestData(maxSize, raw, callback){
             if (raw) {
                 newArg = data;
             } else if (data) {
-
+                var parser = getRequestData.parsers[request.headers['content-type']] || getRequestData.parsers['application/json'];
                 try {
-                    newArg = JSON.parse(data);
+                    newArg = parser(data);
                 } catch (e) {
-                    //Invalid json
+                    //Invalid data
                     newArg = e;
                 }
             }
@@ -43,4 +44,8 @@ function getRequestData(maxSize, raw, callback){
         });
     };
 }
+getRequestData.parsers = {
+    'application/x-www-form-urlencoded': queryString.parse,
+    'application/json': JSON.parse
+};
 module.exports = getRequestData;
