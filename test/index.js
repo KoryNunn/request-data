@@ -65,7 +65,7 @@ grape('get form data', function(t){
     );
 });
 
-grape('get form data', function(t){
+grape('get json data', function(t){
     t.plan(1);
 
     var responseData = {
