@@ -114,3 +114,16 @@ grape('get no data', function(t){
         {}
     );
 });
+
+grape('get data over maxSize', function(t){
+    t.plan(1);
+
+    var handler = requestData(20, function(request, response, data){
+        t.ok(data instanceof Error);
+    });
+
+    handler(
+        createFakeRequest('{ "key": "value that is too long" }'),
+        {}
+    );
+});
