@@ -6,7 +6,7 @@ function createFakeRequest(data, contentType){
     var request = new EventEmitter();
 
     request.headers = {
-            'content-type': contentType || ''
+        'content-type': contentType || ''
     };
 
     request.connection = {
@@ -15,7 +15,7 @@ function createFakeRequest(data, contentType){
 
     process.nextTick(function(){
         if(data){
-            request.emit('data', data);
+            request.emit('data', Buffer.from(data));
         }
 
         process.nextTick(function(){
@@ -28,15 +28,15 @@ function createFakeRequest(data, contentType){
 grape('get data', function(t){
     t.plan(1);
 
-    var responseData = {thing:'stuff'};
+    var sendData = {thing:'stuff'};
 
     var handler = requestData(function(request, response, data){
-        t.deepEqual(data, responseData);
+        t.deepEqual(data, sendData);
     });
 
     handler(
         createFakeRequest(
-            JSON.stringify(responseData)
+            JSON.stringify(sendData)
         ),
         {}
     );
@@ -46,14 +46,14 @@ grape('get form data', function(t){
     t.plan(1);
 
     var formData = 'thing=stuff&dingle=berry',
-        responseData = {
+        sendData = {
             thing: 'stuff',
             dingle: 'berry'
         },
         contentType = 'application/x-www-form-urlencoded';
 
     var handler = requestData(function(request, response, data){
-       t.deepEqual(data, responseData);
+       t.deepEqual(data, sendData);
     });
 
     handler(
@@ -68,19 +68,19 @@ grape('get form data', function(t){
 grape('get json data', function(t){
     t.plan(1);
 
-    var responseData = {
+    var sendData = {
             thing: 'stuff',
             dingle: 'berry'
         },
         contentType = 'application/json';
 
     var handler = requestData(function(request, response, data){
-       t.deepEqual(data, responseData);
+       t.deepEqual(data, sendData);
     });
 
     handler(
         createFakeRequest(
-            JSON.stringify(responseData),
+            JSON.stringify(sendData),
             contentType
         ),
         {}
@@ -122,8 +122,12 @@ grape('get data over maxSize', function(t){
         t.ok(data instanceof Error);
     });
 
+    var sendData = {
+        key: "value that is too long"
+    };
+
     handler(
-        createFakeRequest('{ "key": "value that is too long" }'),
+        createFakeRequest(JSON.stringify(sendData)),
         {}
     );
 });
