@@ -30,8 +30,8 @@ grape('get data', function(t){
 
     var sendData = {thing:'stuff'};
 
-    var handler = requestData(function(request, response, data){
-        t.deepEqual(data, sendData);
+    var handler = requestData(function(request, response, getBody){
+        getBody((error, data) => t.deepEqual(data, sendData));
     });
 
     handler(
@@ -52,8 +52,8 @@ grape('get form data', function(t){
         },
         contentType = 'application/x-www-form-urlencoded';
 
-    var handler = requestData(function(request, response, data){
-       t.deepEqual(data, sendData);
+    var handler = requestData(function(request, response, getBody){
+        getBody((error, data) => t.deepEqual(data, sendData));
     });
 
     handler(
@@ -74,8 +74,8 @@ grape('get json data', function(t){
         },
         contentType = 'application/json';
 
-    var handler = requestData(function(request, response, data){
-       t.deepEqual(data, sendData);
+    var handler = requestData(function(request, response, getBody){
+        getBody((error, data) => t.deepEqual(data, sendData));
     });
 
     handler(
@@ -90,8 +90,9 @@ grape('get json data', function(t){
 grape('get bad data', function(t){
     t.plan(1);
 
-    var handler = requestData(function(request, response, data){
-        t.ok(data instanceof Error);
+    var handler = requestData(function(request, response, getBody){
+        getBody((error, data) => t.ok(error));
+
     });
 
     handler(
@@ -105,8 +106,8 @@ grape('get bad data', function(t){
 grape('get no data', function(t){
     t.plan(1);
 
-    var handler = requestData(function(request, response, data){
-        t.equal(data, undefined);
+    var handler = requestData(function(request, response, getBody){
+        getBody((error, data) => t.deepEqual(data, undefined));
     });
 
     handler(
@@ -118,8 +119,8 @@ grape('get no data', function(t){
 grape('get data over maxSize', function(t){
     t.plan(1);
 
-    var handler = requestData(20, function(request, response, data){
-        t.ok(data instanceof Error);
+    var handler = requestData(20, function(request, response, getBody){
+        getBody((error, data) => t.ok(error));
     });
 
     var sendData = {
