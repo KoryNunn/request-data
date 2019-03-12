@@ -52,7 +52,7 @@ Or globally:
 ```js
 getRequestData.maxRequestSize = 1e10;
 ```
-If data fails to parse during `JSON.parse`, the parse error is passed to the handler instead of data
+If dataSize is greater than maxSize or data fails to parse during `JSON.parse`, the parse error is passed to the handler instead of data
 
 You can handle this case by checking if data is an error:
 

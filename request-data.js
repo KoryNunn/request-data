@@ -15,26 +15,28 @@ function getRequestData(maxSize, raw, callback){
     }
 
     return function(){
-        var data = '',
+        var data = Buffer.from(''),
             args = Array.prototype.slice.call(arguments),
             request = args[0];
 
         request.on('data',function(chunk){
-            if(data.length > (maxSize || getRequestData.maxRequestSize || 1e6)){
+            if(data.length + chunk.length > (maxSize || getRequestData.maxRequestSize || 1e6)){
                 // flood attack, kill.
+                data = new Error('Request data exceeded maxSize');
                 request.connection.destroy();
+                return;
             }
-            data += chunk.toString();
+            data = Buffer.concat([data, chunk]);
         });
 
         request.on('end', function(){
             var newArg;
-            if (raw) {
+            if (raw || data && data instanceof Error) {
                 newArg = data;
-            } else if (data) {
+            } else if (data.length) {
                 var parser = getRequestData.parsers[request.headers['content-type']] || getRequestData.parsers['application/json'];
                 try {
-                    newArg = parser(data);
+                    newArg = parser(data.toString());
                 } catch (e) {
                     //Invalid data
                     newArg = e;
