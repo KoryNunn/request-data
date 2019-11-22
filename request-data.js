@@ -23,7 +23,7 @@ function getRequestData(maxSize, raw, callback){
             if(data.length + chunk.length > (maxSize || getRequestData.maxRequestSize || 1e6)){
                 // flood attack, kill.
                 data = new Error('Request data exceeded maxSize');
-                (request.abort || request.connection.destroy)();
+                (request.destroy || request.connection.destroy)();
                 return;
             }
             data = Buffer.concat([data, chunk]);
