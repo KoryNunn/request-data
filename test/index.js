@@ -9,9 +9,7 @@ function createFakeRequest(data, contentType){
         'content-type': contentType || ''
     };
 
-    request.connection = {
-        destroy: function(){}
-    };
+    request.abort = function(){}
 
     process.nextTick(function(){
         if(data){
